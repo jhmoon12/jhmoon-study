@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가위바위보를합시다</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        body{background-color: rgb(96, 152, 237);}
+        .wrap{width: 1000px; margin: 150px auto; }
+        h1{font-size:50px; color: #fff; text-align: center;}
+        .main{width: 100%; margin: auto; padding-top: 100px; display: flex; justify-content: space-between; 
+            text-align: center; position: relative;}
+        
+        .random{height: 110px; width: 110px; display: flex; justify-content: center; position: absolute; left: 50%; transform: translateX(-50%);
+        overflow: hidden;}
+        .random>li{height: 110px; position: absolute; font-size: 100px; /* display: none; */} 
+        
+        #computer{font-size: 40px; color: #333; margin-bottom: 10px;}
+        .computer-box>p{font-size: 50px; color: rgb(151, 184, 194)}
+        
+        .user-box>#me{font-size: 40px; color: #fff; margin-bottom: 10px;}
+        .user-box>p{font-size: 50px; color: rgb(223, 22, 76);}
+        
+        .select{width: 500px; margin: 200px auto; display: flex; justify-content: space-between; }
+        .select>button{font-size: 60px; width: 100px; height: 100px; border-radius: 50%; border: none;}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>가위바위보를 합시다</h1>
+        <div class="main">
+            <div class="computer-box">
+                <h2 id="computer">computer</h2>
+                <p><span>0</span>점</p>
+            </div>
+            
+                <ul class="random">
+                    <li id="random1" data-fight="1">✌️</li>
+                    <li id="random2" data-fight="2">✊</li>
+                    <li id="random3" data-fight="3">🖐</li>
+                </ul>
+            
+            
+            <div class="user-box">
+                <h2 id="me">user</h2>
+                <p><span>0</span>점</p>
+            </div>
+        </div>
+        
+        <div class="select">
+            <button id="select1"><a href="#" data-fight="1">✌️</a></button>
+            <button id="select2"><a href="#" data-fight="2">✊</a></button>
+            <button id="select3"><a href="#" data-fight="3">🖐</a></button>
+            <button id="select4"><a href="#">🔄</a></button>
+        </div>
+    </div>
+    <script src="libs/jquery-3.3.1.min.js"></script>
+    <script>
+        
+        
+        $('.random li').each(function(num){
+        $(this).css({top: num*110});
+       })//each문 (일렬로 쭉 세워준다)
+      
+        var random=setInterval(animate,200);
+        
+        function animate(){
+            $('.random li').stop().animate({top:'-=110px'},15,back)
+        }
+        function back(){
+            var pos=$(this).position().top;
+          if(pos<=-220){
+            $(this).css({top:'110px'})
+          }
+        }
+        var userchoice; 
+        var choose;
+        var value;
+        
+        function common(){
+            clearInterval(random)
+            $('.random li').each(function(){
+                var position=$(this).position().top;
+                if(position == 0){value = $(this).attr('data-fight')}
+                console.log(position)
+                console.log($(this))
+
+            })
+        }
+         var userJumsu = 0 ;
+         var comJumsu = 0;
+        $('.select button a').on('click',function(){
+            userchoice = $(this).parent().index();
+            console.log(userchoice);
+            
+            
+            common();
+            if(userchoice == 0){
+                if(value == 1)
+                {alert("비겼습니다")}
+                else if(value == 2)
+                {alert("졌습니다")
+                ,comJumsu += 1}
+                else if(value == 3)
+                {alert("이겼습니다")
+                ,userJumsu += 1}
+            }else if(userchoice == 1){
+                if(value == 1)
+                {alert("이겼습니다")
+                ,userJumsu += 1}
+                else if(value == 2)
+                {alert("비겼습니다")}
+                else if(value == 3)
+                {alert("졌습니다")
+                ,comJumsu += 1}
+            }else if(userchoice == 2){
+                if(value == 1)
+                {alert("졌습니다")
+                ,comJumsu += 1}
+                else if(value == 2)
+                {alert("이겼습니다")
+                ,userJumsu += 1}
+                else if(value == 3)
+                {alert("비겼습니다")}
+            }   
+            $('.computer-box span').text(comJumsu);
+            $('.user-box span').text(userJumsu); 
+            random=setInterval(animate,200); //clearinterval해서 없어졌기 때문에 다시 전부 써준다.
+        })
+  
+
+
+        
+
+
+                
+           
+        //값 비교하기 top 값과 버튼 값 비교?
+
+        //나오는 수는 alert로 띄우고 나오는 텍스트는 각각 사용자 옆에 ! 
+        
+
+        
+    </script>
+</body>
+</html>
